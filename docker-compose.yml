@@ -1,0 +1,30 @@
+version: "3.1"
+
+services:
+  mongodb:
+    image: mongo:5.0.19
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    networks:
+      - graalvm
+  redis:
+    image: redis:6.2-alpine
+    networks:
+      - graalvm
+  spring:
+    build:
+      context: .
+    environment:
+      DB_HOST: mongodb
+      DB_USER: root
+      DB_PASS: example
+    ports:
+      - "8080:8080"
+    networks:
+      - graalvm
+
+networks:
+  graalvm:
